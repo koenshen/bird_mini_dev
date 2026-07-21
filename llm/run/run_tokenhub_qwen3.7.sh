@@ -19,7 +19,7 @@ max_retries=2
 num_threads=10
 max_syntax_attempts=20
 sql_dialect='SQLite'
-reasoning_effort='max'
+reasoning_effort='xhigh'
 output_path='./llm/exp_result/tokenhub_output_kg/'
 
 echo "base_url: ${base_url}"
