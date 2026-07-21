@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-data_root='../koenshen_bird_evaluate/data_mini_dev'
+data_root='../bird_evaluate/data_mini_dev'
 eval_path="${data_root}/dev.json"
 db_root_path="${data_root}/dev_databases/"
 use_knowledge='True'
