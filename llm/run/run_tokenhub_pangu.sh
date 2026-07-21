@@ -38,7 +38,7 @@ echo "use_knowledge: ${use_knowledge}"
 echo "chain_of_thought: ${cot}"
 echo "extra arguments: ${*:-<none>}"
 
-uv run --with-requirements ./requirements-inference.txt \
+uv run --with-requirements ./requirements.txt \
   python -u ./llm/src/gpt_request.py \
   --base_url "${base_url}" \
   --api_key "${api_key}" \

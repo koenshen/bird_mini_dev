@@ -8,18 +8,17 @@ use_knowledge='True'
 mode='mini_dev'
 cot='True'
 
-base_url='https://tokenhub.sensetime.com/v1'
-api_key='sk-xxx'
-engine='bailian/glm-5.2'
+base_url='http://106.75.235.194:8002/v1'
+api_key='empty'
+engine='Qwen3.6-27B'
 
 temperature=0
-max_tokens=8192
+max_tokens=20480
 timeout=1200
 max_retries=2
 num_threads=10
 max_syntax_attempts=20
 sql_dialect='SQLite'
-reasoning_effort='max'
 output_path='./llm/exp_result/tokenhub_output_kg/'
 
 echo "base_url: ${base_url}"
@@ -33,10 +32,10 @@ echo "max_tokens: ${max_tokens}"
 echo "timeout: ${timeout}"
 echo "max_retries: ${max_retries}"
 echo "num_threads: ${num_threads}"
+echo "max_syntax_attempts: ${max_syntax_attempts}"
 echo "sql_dialect: ${sql_dialect}"
 echo "use_knowledge: ${use_knowledge}"
 echo "chain_of_thought: ${cot}"
-echo "reasoning_effort: ${reasoning_effort}"
 echo "extra arguments: ${*:-<none>}"
 
 uv run --with-requirements ./requirements.txt \
@@ -57,5 +56,4 @@ uv run --with-requirements ./requirements.txt \
   --timeout "${timeout}" \
   --max_retries "${max_retries}" \
   --max_syntax_attempts "${max_syntax_attempts}" \
-  --reasoning_effort "${reasoning_effort}" \
   "$@"
