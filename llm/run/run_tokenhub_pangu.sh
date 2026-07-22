@@ -12,7 +12,7 @@ base_url='http://10.142.85.18:31180/v1'
 api_key='empty'
 engine='Jiayin-Pangu-Text2Sql-14B-135'
 
-temperature=0
+temperature=1
 max_tokens=4096
 timeout=1200
 max_retries=2
