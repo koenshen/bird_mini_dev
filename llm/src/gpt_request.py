@@ -5,7 +5,6 @@ import os
 import re
 from openai import OpenAI
 from sqlglot import parse
-from sqlglot.errors import ParseError
 from tqdm import tqdm
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -175,7 +174,7 @@ def validate_sql_syntax(sql, sql_dialect):
         statements = [
             statement for statement in parse(sql, read=sql_dialect.lower()) if statement
         ]
-    except ParseError as error:
+    except Exception as error:
         message = re.sub(r"\x1b\[[0-9;]*m", "", str(error))
         return False, message
 
@@ -235,7 +234,7 @@ def worker_function(question_data):
         f"Question {i} still has invalid SQL syntax after "
         f"{max_syntax_attempts} attempts: {last_error}"
     )
-    return post_process_response(last_sql, db_path), i, question_id
+    return None
 
 
 def collect_response_from_gpt(
@@ -292,7 +291,9 @@ def collect_response_from_gpt(
         for future in tqdm(
             concurrent.futures.as_completed(future_to_task), total=len(tasks)
         ):
-            responses.append(future.result())
+            response = future.result()
+            if response is not None:
+                responses.append(response)
     return responses
 
 
