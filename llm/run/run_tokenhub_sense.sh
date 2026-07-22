@@ -8,11 +8,11 @@ use_knowledge='True'
 mode='mini_dev'
 cot='True'
 
-base_url='http://10.142.85.18:8000/v1'
+base_url='http://10.210.9.14:50011/v1'
 api_key='empty'
-engine='Kwai-AutoSQL-14B'
+engine='flash-lite-v36-fp8-step3k-dpo-mtp1'
 
-temperature=1
+temperature=0
 max_tokens=4096
 timeout=1200
 max_retries=2

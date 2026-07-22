@@ -5,10 +5,12 @@ import os
 import re
 from openai import OpenAI
 from sqlglot import parse
+from sqlglot.errors import ParseError
 from tqdm import tqdm
 import time
 from concurrent.futures import ThreadPoolExecutor
 import concurrent.futures
+from datetime import datetime
 
 from prompt import generate_combined_prompts_one
 
@@ -373,6 +375,9 @@ if __name__ == "__main__":
         )
 
     safe_engine_name = args.engine.replace("/", "_")
+    # Include microseconds and the process ID so concurrently started runs of the
+    # same model never overwrite one another's prediction file.
+    run_id = datetime.now().strftime("%Y%m%d_%H%M%S_%f") + f"_pid{os.getpid()}"
     if args.chain_of_thought == "True":
         output_name = (
             args.data_output_path
@@ -383,6 +388,8 @@ if __name__ == "__main__":
             + "_cot"
             + "_"
             + args.sql_dialect
+            + "_"
+            + run_id
             + ".json"
         )
     else:
@@ -394,9 +401,13 @@ if __name__ == "__main__":
             + safe_engine_name
             + "_"
             + args.sql_dialect
+            + "_"
+            + run_id
             + ".json"
         )
     generate_sql_file(sql_lst=responses, output_path=output_name)
+
+    print(f"output file: {output_name}")
 
     print(
         "successfully collect results from {} for {} evaluation; SQL dialect {} Use knowledge: {}; Use COT: {}".format(
