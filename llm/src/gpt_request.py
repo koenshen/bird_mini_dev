@@ -322,9 +322,39 @@ if __name__ == "__main__":
     args_parser.add_argument("--reasoning_effort", type=str, default=None)
     args_parser.add_argument("--enable_thinking", type=str, default=None)
     args_parser.add_argument("--max_syntax_attempts", type=int, default=1)
+    args_parser.add_argument("--output_file", type=str, default=None)
+    args_parser.add_argument("--resume", action="store_true")
     args = args_parser.parse_args()
 
     eval_data = json.load(open(args.eval_path, "r"))
+    full_eval_data = eval_data
+    existing_results = {}
+
+    if args.resume:
+        if not args.output_file:
+            args_parser.error("--resume requires --output_file")
+        if not os.path.isfile(args.output_file):
+            args_parser.error(f"resume file does not exist: {args.output_file}")
+
+        existing_results = json.load(open(args.output_file, "r"))
+        if not isinstance(existing_results, dict):
+            args_parser.error("--output_file must contain a JSON object")
+
+        completed_ids = {
+            str(question_id)
+            for question_id, sql in existing_results.items()
+            if isinstance(sql, str) and sql.strip()
+        }
+        eval_data = [
+            item
+            for index, item in enumerate(full_eval_data)
+            if str(item.get("question_id", index)) not in completed_ids
+        ]
+        print(
+            f"resume file: {args.output_file}; "
+            f"completed: {len(full_eval_data) - len(eval_data)}; "
+            f"remaining: {len(eval_data)}"
+        )
 
     question_list, db_path_list, knowledge_list, question_id_list = decouple_question_schema(
         datasets=eval_data, db_root_path=args.db_root_path
@@ -378,7 +408,15 @@ if __name__ == "__main__":
     # Include microseconds and the process ID so concurrently started runs of the
     # same model never overwrite one another's prediction file.
     run_id = datetime.now().strftime("%Y%m%d_%H%M%S_%f") + f"_pid{os.getpid()}"
-    if args.chain_of_thought == "True":
+    if args.output_file:
+        if args.resume:
+            output_root, output_extension = os.path.splitext(args.output_file)
+            output_name = output_root + "_merged" + output_extension
+        else:
+            output_name = args.output_file
+        if not os.path.dirname(output_name):
+            output_name = os.path.join(".", output_name)
+    elif args.chain_of_thought == "True":
         output_name = (
             args.data_output_path
             + "predict_"
@@ -405,6 +443,24 @@ if __name__ == "__main__":
             + run_id
             + ".json"
         )
+
+    if args.resume:
+        question_positions = {
+            str(item.get("question_id", index)): index
+            for index, item in enumerate(full_eval_data)
+        }
+        valid_existing_responses = [
+            (sql, question_positions[question_id], question_id)
+            for question_id, sql in existing_results.items()
+            if question_id in question_positions
+            and isinstance(sql, str)
+            and sql.strip()
+        ]
+        responses = valid_existing_responses + [
+            (sql, question_positions[str(question_id)], question_id)
+            for sql, _, question_id in responses
+        ]
+
     generate_sql_file(sql_lst=responses, output_path=output_name)
 
     print(f"output file: {output_name}")
@@ -418,3 +474,10 @@ if __name__ == "__main__":
             args.chain_of_thought,
         )
     )
+
+'''
+resume中断重启的命令，会生成一个同名但有个 merged 后缀的新 json 文件，内容为 output_file 的超集
+bash llm/run/run_tokenhub_glm.sh \    
+      --output_file xxxxx.json \                                                    
+      --resume
+'''
