@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-data_root='../bird_evaluate/data_mini_dev'
+data_root='../koenshen_bird_evaluate/data_mini_dev'
 eval_path="${data_root}/dev.json"
 db_root_path="${data_root}/dev_databases/"
 use_knowledge='True'
@@ -12,8 +12,8 @@ base_url='https://tokenhub.sensetime.com/v1'
 api_key='sk-xxx'
 engine='bailian/glm-5.2'
 
-temperature=0
-max_tokens=8192
+temperature=1
+max_tokens=20480
 timeout=1200
 max_retries=2
 num_threads=20
