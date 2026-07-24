@@ -21,7 +21,7 @@ def parse_args():
             "then by SQLite execution-result consensus."
         )
     )
-    parser.add_argument("model", help='Model name contained in filenames, e.g. "Kwai-AutoSQL-14B"')
+    parser.add_argument("--model", help='Model name contained in filenames, e.g. "Kwai-AutoSQL-14B"')
     parser.add_argument(
         "--results-dir",
         default="./llm/exp_result/tokenhub_output_kg",
@@ -216,5 +216,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # python llm/src/self_consistency.py Kwai-AutoSQL-14B
+    # python llm/src/self_consistency.py --model Kwai-AutoSQL-14B
     main()
