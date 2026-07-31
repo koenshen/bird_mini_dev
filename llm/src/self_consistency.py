@@ -216,5 +216,11 @@ def main():
 
 
 if __name__ == "__main__":
-    # python llm/src/self_consistency.py --model Kwai-AutoSQL-14B
     main()
+'''
+python llm/src/self_consistency.py --model Kwai-AutoSQL-14B
+
+python llm/src/self_consistency.py \
+    --results-dir ../koenshen_text-to-sql-agent-original/results/bird_mini_dev_Qwen3.6-27B-no-think-focused_20260730 \
+    --model Qwen3.6-27B-no-think
+'''
