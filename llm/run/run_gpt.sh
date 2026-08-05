@@ -1,4 +1,5 @@
 eval_path='./data/mini_dev_sqlite.json' # _sqlite.json, _mysql.json, _postgresql.json
+prompt_jsonl="${PROMPT_JSONL:-}"
 dev_path='./output/'
 db_root_path='./data/dev_databases/'
 use_knowledge='True'
@@ -23,6 +24,7 @@ data_output_path='./exp_result/turbo_output/'
 data_kg_output_path='./exp_result/turbo_output_kg/'
 
 echo "generate $engine batch, run in $num_threads threads, with knowledge: $use_knowledge, with chain of thought: $cot"
+echo "prompt_jsonl: ${prompt_jsonl:-<not set; using eval_path>}"
 python3 -u ./src/gpt_request.py --db_root_path ${db_root_path} --api_key ${YOUR_API_KEY} --mode ${mode} \
 --engine ${engine} --eval_path ${eval_path} --data_output_path ${data_kg_output_path} --use_knowledge ${use_knowledge} \
---chain_of_thought ${cot} --num_process ${num_threads} --sql_dialect ${sql_dialect}
+--prompt_jsonl "${prompt_jsonl}" --chain_of_thought ${cot} --num_process ${num_threads} --sql_dialect ${sql_dialect} "$@"

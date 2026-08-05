@@ -3,6 +3,7 @@ set -e
 
 data_root='../koenshen_bird_evaluate/data_mini_dev'
 eval_path="${data_root}/dev.json"
+prompt_jsonl="${PROMPT_JSONL:-}"
 db_root_path="${data_root}/dev_databases/"
 use_knowledge='True'
 mode='mini_dev'
@@ -26,6 +27,7 @@ echo "base_url: ${base_url}"
 echo "model: ${engine}"
 echo "api_key: $([[ -n "${api_key}" ]] && echo '<set>' || echo '<empty>')"
 echo "eval_path: ${eval_path}"
+echo "prompt_jsonl: ${prompt_jsonl:-<not set; using eval_path>}"
 echo "db_root_path: ${db_root_path}"
 echo "output_path: ${output_path}"
 echo "temperature: ${temperature}"
@@ -45,6 +47,7 @@ uv run --with-requirements ./requirements.txt \
   --api_key "${api_key}" \
   --engine "${engine}" \
   --eval_path "${eval_path}" \
+  --prompt_jsonl "${prompt_jsonl}" \
   --db_root_path "${db_root_path}" \
   --data_output_path "${output_path}" \
   --mode "${mode}" \

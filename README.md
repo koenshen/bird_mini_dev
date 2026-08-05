@@ -372,3 +372,14 @@ Please cite the repo if you think our work is helpful to you.
   year={2024}
 }
 ```
+
+## Self
+```bash
+# 不使用 JSONL，保持原来的 eval_path 流程
+bash llm/run/run_tokenhub_glm.sh
+
+# 通过命令行参数指定，也会覆盖环境变量
+bash llm/run/run_tokenhub_sense_260804_junhao.sh --prompt_jsonl llm/run/mini_dev_prompt.jsonl
+bash llm/run/run_tokenhub_sense_260804.sh --prompt_jsonl llm/run/mini_dev_prompt.jsonl
+
+```

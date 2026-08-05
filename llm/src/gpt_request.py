@@ -79,6 +79,22 @@ def decouple_question_schema(datasets, db_root_path):
     return question_list, db_path_list, knowledge_list, question_id_list
 
 
+def load_jsonl(path):
+    """Load non-empty JSON objects from a JSON Lines file."""
+    datasets = []
+    with open(path, "r", encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, 1):
+            if not line.strip():
+                continue
+            data = json.loads(line)
+            if not isinstance(data, dict):
+                raise ValueError(f"expected an object on line {line_number} of {path}")
+            if not isinstance(data.get("prompt"), str) or not data["prompt"].strip():
+                raise ValueError(f"missing prompt on line {line_number} of {path}")
+            datasets.append(data)
+    return datasets
+
+
 def generate_sql_file(sql_lst, output_path=None):
     """
     Function to save the SQL results to a file.
@@ -256,6 +272,7 @@ def collect_response_from_gpt(
     reasoning_effort=None,
     enable_thinking=None,
     max_syntax_attempts=1,
+    prompt_list=None,
 ):
     """
     Collect responses from GPT using multiple threads.
@@ -264,7 +281,9 @@ def collect_response_from_gpt(
 
     tasks = [
         (
-            generate_combined_prompts_one(
+            prompt_list[i]
+            if prompt_list is not None
+            else generate_combined_prompts_one(
                 db_path=db_path_list[i],
                 question=question_list[i],
                 sql_dialect=sql_dialect,
@@ -302,6 +321,7 @@ def collect_response_from_gpt(
 if __name__ == "__main__":
     args_parser = argparse.ArgumentParser()
     args_parser.add_argument("--eval_path", type=str, default="")
+    args_parser.add_argument("--prompt_jsonl", type=str, default=None)
     args_parser.add_argument("--mode", type=str, default="dev")
     args_parser.add_argument("--test_path", type=str, default="")
     args_parser.add_argument("--use_knowledge", type=str, default="False")
@@ -326,7 +346,11 @@ if __name__ == "__main__":
     args_parser.add_argument("--resume", action="store_true")
     args = args_parser.parse_args()
 
-    eval_data = json.load(open(args.eval_path, "r"))
+    if args.prompt_jsonl:
+        eval_data = load_jsonl(args.prompt_jsonl)
+        print(f"prompt JSONL: {args.prompt_jsonl}; loaded: {len(eval_data)}")
+    else:
+        eval_data = json.load(open(args.eval_path, "r"))
     full_eval_data = eval_data
     existing_results = {}
 
@@ -359,6 +383,7 @@ if __name__ == "__main__":
     question_list, db_path_list, knowledge_list, question_id_list = decouple_question_schema(
         datasets=eval_data, db_root_path=args.db_root_path
     )
+    prompt_list = [item["prompt"] for item in eval_data] if args.prompt_jsonl else None
     assert (
         len(question_list)
         == len(db_path_list)
@@ -384,6 +409,7 @@ if __name__ == "__main__":
             args.reasoning_effort,
             args.enable_thinking,
             max(1, args.max_syntax_attempts),
+            prompt_list,
         )
     else:
         responses = collect_response_from_gpt(
@@ -402,6 +428,7 @@ if __name__ == "__main__":
             reasoning_effort=args.reasoning_effort,
             enable_thinking=args.enable_thinking,
             max_syntax_attempts=max(1, args.max_syntax_attempts),
+            prompt_list=prompt_list,
         )
 
     safe_engine_name = args.engine.replace("/", "_")
