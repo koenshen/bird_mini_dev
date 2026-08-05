@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -e
 
-data_root='../koenshen_bird_evaluate/data_mini_dev'
+data_root='../koenshen_bird_evaluate/data_dev'
 eval_path="${data_root}/dev.json"
 db_root_path="${data_root}/dev_databases/"
 use_knowledge='True'
-mode='mini_dev'
+mode='dev'
 cot='True'
 
-base_url='http://10.210.9.14:50011/v1'
+base_url='http://10.210.9.14:54321/v1'
 api_key='empty'
 engine='sjxb_Qwen3_6_27B_bird_v12'
 
