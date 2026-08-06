@@ -375,11 +375,9 @@ Please cite the repo if you think our work is helpful to you.
 
 ## Self
 ```bash
-# 不使用 JSONL，保持原来的 eval_path 流程
-bash llm/run/run_tokenhub_glm.sh
+# 普通评测，自行组装 prompt
+bash llm/run/run_tokenhub_sense_260804_junhao.sh
 
-# 通过命令行参数指定，也会覆盖环境变量
+# 使用现成的 prompt：https://github.com/bird-bench/mini_dev/blob/main/finetuning/inference/mini_dev_prompt.jsonl
 bash llm/run/run_tokenhub_sense_260804_junhao.sh --prompt_jsonl llm/run/mini_dev_prompt.jsonl
-bash llm/run/run_tokenhub_sense_260804.sh --prompt_jsonl llm/run/mini_dev_prompt.jsonl
-
 ```
