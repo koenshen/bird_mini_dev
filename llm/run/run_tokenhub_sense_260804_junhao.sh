@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 set -e
 
-data_root='../koenshen_bird_evaluate/data_mini_dev'
+data_root='../koenshen_bird_evaluate/data_dev'
 eval_path="${data_root}/dev.json"
 prompt_jsonl="${PROMPT_JSONL:-}"
 db_root_path="${data_root}/dev_databases/"
 use_knowledge='True'
-mode='mini_dev'
+mode='dev'
 cot='True'
 
 base_url='http://10.210.9.14:54321/v1'
 api_key='empty'
 engine='sjxb_Qwen3_6_27B_bird_v12'
 
-temperature=0.6
-max_tokens=8192
+temperature=1.0
+max_tokens=32768
 timeout=1200
 max_retries=2
 num_threads=10
