@@ -20,6 +20,16 @@ def new_directory(path):
         os.makedirs(path)
 
 
+def parse_boolean(value):
+    """Parse a command-line boolean while preserving an unset value as None."""
+    normalized_value = value.strip().lower()
+    if normalized_value == "true":
+        return True
+    if normalized_value == "false":
+        return False
+    raise argparse.ArgumentTypeError("expected 'true' or 'false'")
+
+
 def connect_gpt(engine, prompt, max_tokens, temperature, stop, client, reasoning_effort=None, enable_thinking=None):
     """
     Function to connect to the GPT API and get the response.
@@ -340,7 +350,7 @@ if __name__ == "__main__":
     args_parser.add_argument("--timeout", type=float, default=1200)
     args_parser.add_argument("--max_retries", type=int, default=2)
     args_parser.add_argument("--reasoning_effort", type=str, default=None)
-    args_parser.add_argument("--enable_thinking", type=str, default=None)
+    args_parser.add_argument("--enable_thinking", type=parse_boolean, default=None)
     args_parser.add_argument("--max_syntax_attempts", type=int, default=1)
     args_parser.add_argument("--output_file", type=str, default=None)
     args_parser.add_argument("--resume", action="store_true")

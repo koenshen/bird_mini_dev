@@ -379,5 +379,5 @@ Please cite the repo if you think our work is helpful to you.
 bash llm/run/run_tokenhub_sense_260804_junhao.sh
 
 # 使用现成的 prompt：https://github.com/bird-bench/mini_dev/blob/main/finetuning/inference/mini_dev_prompt.jsonl
-bash llm/run/run_tokenhub_sense_260804_junhao.sh --prompt_jsonl llm/run/mini_dev_prompt.jsonl
+bash llm/run/run_tokenhub_sense_260804_junhao.sh --prompt_jsonl llm/run/dev_prompt.jsonl
 ```

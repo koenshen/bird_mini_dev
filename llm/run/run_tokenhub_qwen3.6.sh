@@ -8,6 +8,7 @@ db_root_path="${data_root}/dev_databases/"
 use_knowledge='True'
 mode='dev'
 cot='True'
+thinking='True'
 
 base_url='http://106.75.235.194:8002/v1'
 api_key='empty'
@@ -39,6 +40,7 @@ echo "sql_dialect: ${sql_dialect}"
 echo "use_knowledge: ${use_knowledge}"
 echo "chain_of_thought: ${cot}"
 echo "extra arguments: ${*:-<none>}"
+echo "thinking: ${thinking}"
 
 uv run --with-requirements ./requirements.txt \
   python -u ./llm/src/gpt_request.py \
