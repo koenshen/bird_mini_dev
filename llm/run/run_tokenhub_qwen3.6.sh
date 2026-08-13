@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
+# bash llm/run/run_tokenhub_qwen3.6.sh  --prompt_jsonl llm/run/dev_prompt.jsonl --output_file ./llm/exp_result/tokenhub_output_kg/predict_dev_Qwen3_6-27B_no_think_cot_SQLite-260812-1.json
 data_root='../koenshen_bird_evaluate/data_dev'
 eval_path="${data_root}/dev.json"
 prompt_jsonl="${PROMPT_JSONL:-}"
@@ -8,7 +9,6 @@ db_root_path="${data_root}/dev_databases/"
 use_knowledge='True'
 mode='dev'
 cot='True'
-thinking='True'
 
 base_url='http://106.75.235.194:8002/v1'
 api_key='empty'
@@ -18,7 +18,7 @@ temperature=1.0
 max_tokens=32768
 timeout=1200
 max_retries=2
-num_threads=10
+num_threads=20
 max_syntax_attempts=20
 sql_dialect='SQLite'
 output_path='./llm/exp_result/tokenhub_output_kg/'
@@ -40,7 +40,6 @@ echo "sql_dialect: ${sql_dialect}"
 echo "use_knowledge: ${use_knowledge}"
 echo "chain_of_thought: ${cot}"
 echo "extra arguments: ${*:-<none>}"
-echo "thinking: ${thinking}"
 
 uv run --with-requirements ./requirements.txt \
   python -u ./llm/src/gpt_request.py \

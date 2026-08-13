@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# bash llm/run/run_tokenhub_sense_260804_junhao.sh --output_file ./llm/exp_result/tokenhub_output_kg/predict_dev_sjxb_Qwen3_6_27B_bird_v12_cot_SQLite-260812-1.json
+# bash llm/run/run_tokenhub_sense_260804_junhao.sh --prompt_jsonl llm/run/dev_prompt.jsonl --output_file ./llm/exp_result/tokenhub_output_kg/predict_dev_sjxb_Qwen3_6_27B_bird_v12_cot_SQLite-260812-1.json
 
 data_root='../koenshen_bird_evaluate/data_dev'
 eval_path="${data_root}/dev.json"
@@ -19,7 +19,7 @@ temperature=1.0
 max_tokens=32768
 timeout=1200
 max_retries=2
-num_threads=20
+num_threads=50
 max_syntax_attempts=20
 sql_dialect='SQLite'
 output_path='./llm/exp_result/tokenhub_output_kg/'

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
+# bash llm/run/run_tokenhub_qwen3.7.sh  --prompt_jsonl llm/run/dev_prompt.jsonl
 data_root='../koenshen_bird_evaluate/data_dev'
 eval_path="${data_root}/dev.json"
 prompt_jsonl="${PROMPT_JSONL:-}"
