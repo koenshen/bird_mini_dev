@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# bash llm/run/run_tokenhub_qwen3.6.sh  --prompt_jsonl llm/run/dev_prompt.jsonl --output_file ./llm/exp_result/tokenhub_output_kg/predict_dev_Qwen3_6-27B_no_think_cot_SQLite-260812-1.json
+# bash llm/run/run_tokenhub_qwen3.6.sh  --prompt_jsonl llm/run/dev_prompt.jsonl --output_file ./llm/exp_result/tokenhub_output_kg/predict_dev_Qwen3_6-27B_think_cot_SQLite-260813.json
 data_root='../koenshen_bird_evaluate/data_dev'
 eval_path="${data_root}/dev.json"
 prompt_jsonl="${PROMPT_JSONL:-}"
