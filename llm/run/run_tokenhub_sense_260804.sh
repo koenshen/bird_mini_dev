@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# bash llm/run/run_tokenhub_sense_260804.sh --prompt_jsonl llm/run/dev_prompt.jsonl --output_file ./llm/exp_result/tokenhub_output_kg/predict_dev_SenseNova_finance_opd_sync_v1_cot_SQLite-260814.json
+# bash llm/run/run_tokenhub_sense_260804.sh --prompt_jsonl llm/run/dev_prompt.jsonl --output_file ./llm/exp_result/tokenhub_output_kg/predict_dev_SenseNova_finance_opd_sync_v1_cot_SQLite-7-260814.json
 
 data_root='../koenshen_bird_evaluate/data_dev'
 eval_path="${data_root}/dev.json"
@@ -18,8 +18,8 @@ engine='SenseNova_finance_opd_sync_v1'
 temperature=1.0
 max_tokens=32768
 timeout=1200
-max_retries=2
-num_threads=50
+max_retries=9
+num_threads=390
 max_syntax_attempts=20
 sql_dialect='SQLite'
 output_path='./llm/exp_result/tokenhub_output_kg/'
