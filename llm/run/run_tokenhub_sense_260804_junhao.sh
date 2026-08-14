@@ -11,6 +11,7 @@ use_knowledge='True'
 mode='dev'
 cot='True'
 
+# 部署的模型名就是Qwen3.6-27B，部署老师限制的
 base_url='http://10.142.85.18:31181/v1'
 api_key='empty'
 engine='Qwen3.6-27B'

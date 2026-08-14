@@ -1,23 +1,25 @@
 #!/usr/bin/env bash
 set -e
 
-data_root='../koenshen_bird_evaluate/data_mini_dev'
+# bash llm/run/run_tokenhub_sense_260804.sh --prompt_jsonl llm/run/dev_prompt.jsonl --output_file ./llm/exp_result/tokenhub_output_kg/predict_dev_SenseNova_finance_opd_sync_v1_cot_SQLite-260814.json
+
+data_root='../koenshen_bird_evaluate/data_dev'
 eval_path="${data_root}/dev.json"
 prompt_jsonl="${PROMPT_JSONL:-}"
 db_root_path="${data_root}/dev_databases/"
 use_knowledge='True'
-mode='mini_dev'
+mode='dev'
 cot='True'
 
-base_url='http://10.210.9.14:180/v1'
+base_url='http://10.210.9.14:54321/v1'
 api_key='empty'
-engine='SenseNova-Flash-Lite-20260727-v39-fp8-step4k-dpov2-mtp'
+engine='SenseNova_finance_opd_sync_v1'
 
-temperature=0.6
-max_tokens=8192
+temperature=1.0
+max_tokens=32768
 timeout=1200
 max_retries=2
-num_threads=10
+num_threads=50
 max_syntax_attempts=20
 sql_dialect='SQLite'
 output_path='./llm/exp_result/tokenhub_output_kg/'
